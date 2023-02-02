@@ -9,5 +9,6 @@
 - 是否自动备份开关
 - 设备管理 -> 备份管理
 
+- 使用[libusb](https://github.com/gotmc/libusb)监听USB设备热插拔事件
 - iOS 使用`idevicebackup2`
 - Android 使用`adb+fuse` or `smb/nfs`
