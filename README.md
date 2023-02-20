@@ -28,7 +28,7 @@ $ sudo apt-get install -y libusb-dev libusb-1.0-0-dev
 
 ## 实现细节
 
-- iOS 使用`idevicebackup2`
+- iOS 使用[`idevicebackup2`](https://github.com/libimobiledevice/libimobiledevice)
 - Android 使用`adb+fuse` or `smb/nfs`
 
 ## 界面设计
