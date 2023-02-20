@@ -53,10 +53,10 @@ adb devices -l
 List of devices attached
 
 List of devices attached
-4UX0221106000973       unauthorized usb:338952192X transport_id:1
+4UX02211060009xx       unauthorized usb:338952192X transport_id:1
 
 List of devices attached
-4UX0221106000973       device usb:338952192X product:NOP-AN00P model:NOP_AN00 device:HWNOP transport_id:2
+4UX02211060009xx       device usb:338952192X product:NOP-AN00P model:NOP_AN00 device:HWNOP transport_id:2
 */
 func ListAndroidDevices() (devices []map[string]string) {
 	output, _ := exec.Command("adb", "devices", "-l").CombinedOutput()
@@ -83,15 +83,6 @@ func ListAndroidDevices() (devices []map[string]string) {
 		m["name"] = GetAndroidDeviceInfo(row[0], "ro.config.marketing_name")
 		devices = append(devices, m)
 	}
-	/*
-		"id":"4UX0221106000973"
-		"type":"device"
-		"usb":"338952192X"
-		"product":"NOP-AN00P"
-		"model":"NOP_AN00"
-		"device":"HWNOP"
-		"transport_id":"2"
-	*/
 	return devices
 }
 
@@ -135,7 +126,7 @@ DeviceColor: #e4e7e8
 DeviceName: iPhone
 SerialNumber: F2LQT4JFGRX*
               F2LDC0HMN70*
-PhoneNumber: +86 180 xxxx 0683
+PhoneNumber: +86 188 xxxx 8888
 ProductType: iPhone8,2
 ProductVersion: 15.7.1
 ModelNumber: ML6J2
