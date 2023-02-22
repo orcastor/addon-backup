@@ -112,9 +112,9 @@ func ListIOSDevices() (devices []map[string]string) {
 		m["id"] = row[0]
 		m["source"] = row[1]
 		// 基础信息
-		GetIOSDeviceInfo(m, []string{"-u", row[0]})
+		GetIOSDeviceInfo(m, row[0])
 		// 磁盘空间信息
-		GetIOSDeviceInfo(m, []string{"-u", row[0], "-q", "com.apple.disk_usage"})
+		GetIOSDeviceInfo(m, row[0], "-q", "com.apple.disk_usage")
 	}
 	return devices
 }
@@ -138,8 +138,8 @@ TotalDiskCapacity: 31708938240
 TotalDataAvailable: 4504629248
 TotalSystemAvailable: 335544320
 */
-func GetIOSDeviceInfo(m map[string]string, args []string) {
-	output, _ := exec.Command("ideviceinfo", args...).CombinedOutput()
+func GetIOSDeviceInfo(m map[string]string, args ...string) {
+	output, _ := exec.Command("ideviceinfo", append([]string{"-u"}, args...)...).CombinedOutput()
 	for _, attr := range strings.Split(string(output), "\n") {
 		kv := strings.Split(attr, ": ")
 		if len(kv) <= 1 {
