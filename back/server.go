@@ -2,10 +2,10 @@ package main
 
 import (
 	"os/exec"
+	"regexp"
 	"strings"
 
 	"github.com/gotmc/libusb/v2"
-
 	"github.com/gotomicro/ego"
 	"github.com/gotomicro/ego/core/elog"
 	"github.com/gotomicro/ego/server/egin"
@@ -60,12 +60,12 @@ List of devices attached
 */
 func ListAndroidDevices() (devices []map[string]string) {
 	output, _ := exec.Command("adb", "devices", "-l").CombinedOutput()
-	res := strings.Split(string(output), "List of devices attached\n")
-	if len(res) <= 0 {
+	res := strings.Split(string(output), "List of devices attached")
+	if len(res) <= 1 {
 		return
 	}
 	for _, dev := range strings.Split(res[1], "\n") {
-		row := strings.Split(dev, "       ")
+		row := strings.Split(strings.Trim(dev, "\r\n"), "       ")
 		if len(row) <= 1 {
 			continue
 		}
@@ -81,6 +81,7 @@ func ListAndroidDevices() (devices []map[string]string) {
 			}
 		}
 		m["name"] = GetAndroidDeviceInfo(row[0], "ro.config.marketing_name")
+		GetAndroidDeviceDiskSpace(m)
 		devices = append(devices, m)
 	}
 	return devices
@@ -93,6 +94,25 @@ PORSCHE DESIGN HUAWEI Mate 40
 func GetAndroidDeviceInfo(id, prop string) string {
 	output, _ := exec.Command("adb", []string{"-s", id, "shell", "getprop", prop}...).CombinedOutput()
 	return strings.TrimSpace(string(output))
+}
+
+func GetAndroidDeviceDiskSpace(m map[string]string) {
+	output, _ := exec.Command("adb", "shell", "df", "/storage/emulated").CombinedOutput()
+	dfs := strings.Split(string(output), "\n")
+	if len(dfs) <= 1 {
+		return
+	}
+	dfs[1] = regexp.MustCompile(`\s+`).ReplaceAllString(dfs[1], " ")
+	row := strings.Split(strings.Trim(dfs[1], "\r\n "), " ")
+	if len(row) <= 1 {
+		return
+	}
+
+	m["total"] = row[1]
+	m["used"] = row[2]
+	m["available"] = row[3]
+	m["use%"] = row[4]
+	return
 }
 
 /*
@@ -115,6 +135,7 @@ func ListIOSDevices() (devices []map[string]string) {
 		GetIOSDeviceInfo(m, row[0])
 		// 磁盘空间信息
 		GetIOSDeviceInfo(m, row[0], "-q", "com.apple.disk_usage")
+		devices = append(devices, m)
 	}
 	return devices
 }
@@ -124,8 +145,7 @@ func ListIOSDevices() (devices []map[string]string) {
 DeviceClass: iPhone
 DeviceColor: #e4e7e8
 DeviceName: iPhone
-SerialNumber: F2LQT4JFGRX*
-              F2LDC0HMN70*
+SerialNumber: F2LQT4JFGRX* F2LDC0HMN70*
 PhoneNumber: +86 188 xxxx 8888
 ProductType: iPhone8,2
 ProductVersion: 15.7.1
