@@ -38,4 +38,11 @@ $ sudo apt-get install -y libusb-dev libusb-1.0-0-dev
 ## 界面设计
 
 - 是否自动备份开关
-- 设备管理 -> 备份管理
+- 备份首页默认展示设备管理
+  - 可以隐藏未连接设备
+  - 按备份时间排序
+
+### 注意事项 
+
+- `yarn run build:pro`打包后的文件和webapp的放置到一起：
+`ln -s $(addon-backup)/front/dist/ $(webapp)/dist/bak`
