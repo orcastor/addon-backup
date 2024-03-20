@@ -15,6 +15,7 @@ func TestListAndroidDevices(t *testing.T) {
 		"product":"NOP-AN00P"
 		"model":"NOP_AN00"
 		"device":"HWNOP"
+		"brand":"HUAWEI"
 		"transport_id":"2"
 		"name":"PORSCHE DESIGN HUAWEI Mate 40"
 	*/
