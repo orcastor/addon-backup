@@ -24,15 +24,15 @@
           </template>
         </el-menu-item>
         <el-menu-item :index="1">
-          <el-icon><Box /></el-icon>
+          <el-icon><Cellphone /></el-icon>
           <template #title>
-            <span>备份任务</span>
+            <span>设备管理</span>
           </template>
         </el-menu-item>
         <el-menu-item :index="2">
-          <el-icon><FirstAidKit /></el-icon>
+          <el-icon><Box /></el-icon>
           <template #title>
-            <span>恢复任务</span>
+            <span>备份管理</span>
           </template>
         </el-menu-item>
       </el-menu>
@@ -69,7 +69,7 @@ import { ref, computed, watch, onMounted } from 'vue';
 import router from "@/routers";
 
 import { store } from "@/store";
-import { House, Expand, Fold, Box, FirstAidKit } from '@element-plus/icons-vue';
+import { House, Cellphone, Expand, Fold, Box } from '@element-plus/icons-vue';
 import { toDefaultIcon, toIcon, getExt, isZip } from "@/config/icons";
 
 import { Cache } from "@/store/cache";

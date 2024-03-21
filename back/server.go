@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/gotmc/libusb/v2"
 	"github.com/gotomicro/ego"
 	"github.com/gotomicro/ego/core/elog"
 	"github.com/gotomicro/ego/server/egin"
@@ -15,15 +14,6 @@ import (
 func main() {
 	core.InitDB()
 
-	ctx, err := libusb.NewContext()
-	if err != nil {
-		elog.Panic("Couldn't create USB context. Ending now.")
-	}
-	defer ctx.Close()
-
-	ctx.HotplugRegisterCallbackEvent(0, 0, libusb.HotplugArrived|libusb.HotplugLeft, USBEvents)
-	defer ctx.HotplugDeregisterAllCallbacks()
-
 	if err := ego.New().Serve(func() *egin.Component {
 		server := egin.Load("server.http").Build()
 
@@ -31,13 +21,10 @@ func main() {
 		server.Use(middleware.CORS())
 		server.Use(middleware.JWT())
 
-		_ = server.Group("/bak/api")
+		api := server.Group("/bak/api")
+		api.POST("/list", list)
 		return server
 	}()).Run(); err != nil {
 		elog.Panic("startup", elog.Any("err", err))
 	}
-}
-
-func USBEvents(vID, pID uint16, eventType libusb.HotPlugEventType) {
-	// elog.Infof("VendorID: %04x, ProductID: %04x, EventType: %d\r\n", vID, pID, eventType)
 }
