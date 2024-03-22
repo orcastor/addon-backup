@@ -22,54 +22,23 @@ export namespace Login {
   }
 }
 
-export namespace Object {
+export namespace Device {
   export interface ReqList {
-    p: number;
-    b: number;
-    w?: string;
-    d?: string;
-    t?: number;
-    c: number;
-    o?: string;
-    e?: number;
   }
-  export interface ObjectInfo {
-    i: number; // id
-    p?: number; // pid
-    m: number; // mtime
-    d?: number; // did
-    t: number; // type
-    n: string; // name
-    s?: number; //size
-    e?: any; // ext
+  export interface DeviceInfo {
+    device_id: string;
+    authorized: boolean;
+    serial_no: string;
+    connection: string;
+    product_name: string;
+    brand: string;
+    os: string;
+    total: string;
+    data_available: string;
+    sys_available: string;
   }
   export interface ResList {
-    o?: ObjectInfo[];
-  }
-  export interface ReqGet {
-    b: number;
-    i: number;
-  }
-  export interface ResGet {
-    o?: ObjectInfo;
-  }
-}
-
-export namespace Preview {
-  export interface ObjectInfo {
-    m: number; // mtime
-    t: number; // type
-    n?: string; // name
-    s?: number; //size
-  }
-  export interface ResList {
-    o?: ObjectInfo[];
-  }
-  export interface ReqGet {
-    b: number;
-    i: number;
-  }
-  export interface ResGet {
-    o?: ObjectInfo;
+    count: number;
+    devs: DeviceInfo[];
   }
 }

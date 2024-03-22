@@ -24,12 +24,6 @@
           </template>
         </el-menu-item>
         <el-menu-item :index="1">
-          <el-icon><Cellphone /></el-icon>
-          <template #title>
-            <span>设备管理</span>
-          </template>
-        </el-menu-item>
-        <el-menu-item :index="2">
           <el-icon><Box /></el-icon>
           <template #title>
             <span>备份管理</span>
@@ -57,8 +51,11 @@
           <span v-if="previewing" >{{preview_title}}</span>
         </div>
       </el-header>
-      <el-main class="main" :style=mainStyle()>
-        <el-empty description="空目录" />
+      <el-main
+        v-loading="loading"
+        element-loading-text="等待设备通过USB/WIFI连接"
+        element-loading-background="rgba(0, 0, 0, 0.8)"
+        class="main" :style=mainStyle()>
       </el-main>
     </el-container>
   </el-container>
@@ -69,10 +66,13 @@ import { ref, computed, watch, onMounted } from 'vue';
 import router from "@/routers";
 
 import { store } from "@/store";
-import { House, Cellphone, Expand, Fold, Box } from '@element-plus/icons-vue';
+import { House, Expand, Fold, Box } from '@element-plus/icons-vue';
 import { toDefaultIcon, toIcon, getExt, isZip } from "@/config/icons";
 
 import { Cache } from "@/store/cache";
+
+import { Device } from "@/api/interface";
+import { listApi } from "@/api/modules/device";
 
 import 'element-plus/es/components/message-box/style/css';
 import { ElMessage, ElMessageBox } from 'element-plus';
@@ -137,6 +137,17 @@ onMounted(() => {
 });
 
 const init = () => {
+  try {
+    const req:Device.ReqList = {};
+    const res = listApi(req);
+    console.log(res);
+    
+    let devs = res.data!.devs as never;
+    if (devs?.length > 0) {
+      loading.value = false;
+    }
+  } finally {
+  }
 };
 
 // 退出登录

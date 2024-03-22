@@ -7,16 +7,16 @@ import (
 )
 
 type DeviceInfo struct {
-	DeviceID      string `json:"device_id"`
+	DeviceID      string `json:"device_id,omitempty"`
 	Authorized    bool   `json:"authorized"`
-	SerialNo      string `json:"serial_no"`
-	Connection    string `json:"connection"` // USB / <IP>
-	ProductName   string `json:"product_name"`
-	Brand         string `json:"brand"`
-	OS            string `json:"os"` // ANDROID / IOS
-	Total         string `json:"total"`
-	DataAvailable string `json:"data_available"`
-	SysAvailable  string `json:"sys_available"`
+	SerialNo      string `json:"serial_no,omitempty"`
+	Connection    string `json:"connection,omitempty"` // USB / <IP>
+	ProductName   string `json:"product_name,omitempty"`
+	Brand         string `json:"brand,omitempty"`
+	OS            string `json:"os,omitempty"` // ANDROID / IOS
+	Total         string `json:"total,omitempty"`
+	DataAvailable string `json:"data_available,omitempty"`
+	SysAvailable  string `json:"sys_available,omitempty"`
 }
 
 func list(ctx *gin.Context) {

@@ -12,6 +12,9 @@ import (
 */
 func ListIOSDevices() (devices []map[string]string) {
 	output, _ := exec.Command("idevice_id").CombinedOutput()
+	if strings.Index(string(output), "ERROR") >= 0 {
+		return
+	}
 	devs := strings.Split(string(output), "\n")
 	for _, dev := range devs {
 		row := strings.Split(dev, " ")
@@ -29,7 +32,7 @@ func ListIOSDevices() (devices []map[string]string) {
 		m["brand"] = "APPLE"
 		devices = append(devices, m)
 	}
-	return devices
+	return
 }
 
 /*
