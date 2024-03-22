@@ -18,6 +18,5 @@ func init() {
 
 func USBEvents(vID, pID uint16, eventType libusb.HotPlugEventType) {
 	elog.Infof("VendorID: %04x, ProductID: %04x, EventType: %d\r\n", vID, pID, eventType)
-	_ = ListAndroidDevices()
-	_ = ListIOSDevices()
+	// h5 sse
 }

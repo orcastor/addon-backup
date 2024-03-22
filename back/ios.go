@@ -20,7 +20,7 @@ func ListIOSDevices() (devices []map[string]string) {
 		}
 		m := make(map[string]string, 0)
 		m["id"] = row[0]
-		m["source"] = row[1]
+		m["con"] = strings.Trim(row[1], "()")
 		// 基础信息
 		GetIOSDeviceInfo(m, row[0])
 		// 磁盘空间信息
