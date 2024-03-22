@@ -46,6 +46,7 @@ PhoneNumber: +86 188 xxxx 8888
 ProductType: iPhone8,2
 ProductVersion: 15.7.1
 ModelNumber: ML6J2
+RegulatoryModelNumber: A1687
 RegionInfo: CH/A
 UniqueDeviceID: 9dd16339e3fb8357f5954fdeb83383e0e97aabxx
 
@@ -63,7 +64,7 @@ func GetIOSDeviceInfo(m map[string]string, args ...string) {
 		}
 		switch kv[0] {
 		case "DeviceClass", "DeviceColor", "DeviceName", "SerialNumber", "PhoneNumber":
-		case "ProductType", "ProductVersion", "ModelNumber", "RegionInfo":
+		case "ProductType", "ProductVersion", "ModelNumber", "RegionInfo", "RegulatoryModelNumber":
 		case "TotalDiskCapacity", "TotalDataAvailable", "TotalSystemAvailable":
 			m[kv[0]] = kv[1]
 		}
