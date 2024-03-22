@@ -1,21 +1,22 @@
-package back
+package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/orcastor/addon-backup/back"
 	"github.com/orcastor/orcas/rpc/util"
 )
 
 type DeviceInfo struct {
-	DeviceID      string
-	Authorized    bool
-	SerialNo      string
-	Connection    string // USB / IP
-	ProductName   string
-	Brand         string
-	OS            string // ANDROID / IOS
-	Total         string
-	DataAvailable string
-	SysAvailable  string
+	DeviceID      string `json:"device_id"`
+	Authorized    bool   `json:"authorized"`
+	SerialNo      string `json:"serial_no"`
+	Connection    string `json:"connection"` // USB / <IP>
+	ProductName   string `json:"product_name"`
+	Brand         string `json:"brand"`
+	OS            string `json:"os"` // ANDROID / IOS
+	Total         string `json:"total"`
+	DataAvailable string `json:"data_available"`
+	SysAvailable  string `json:"sys_available"`
 }
 
 func list(ctx *gin.Context) {
@@ -24,7 +25,7 @@ func list(ctx *gin.Context) {
 	ctx.BindJSON(&req)
 
 	var devs []*DeviceInfo
-	androidDevs := ListAndroidDevices()
+	androidDevs := back.ListAndroidDevices()
 	for _, dev := range androidDevs {
 		if dev["type"] == "unauthorized" {
 			devs = append(devs, &DeviceInfo{
@@ -45,7 +46,7 @@ func list(ctx *gin.Context) {
 			})
 		}
 	}
-	iosDevs := ListIOSDevices()
+	iosDevs := back.ListIOSDevices()
 	for _, dev := range iosDevs {
 		if len(dev) <= 2 {
 			devs = append(devs, &DeviceInfo{
