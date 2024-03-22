@@ -16,6 +16,9 @@ List of devices attached
 4UX02211060009xx       unauthorized usb:338952192X transport_id:1
 
 List of devices attached
+192.168.50.234:5555    device product:NOP-AN00P model:NOP_AN00 device:HWNOP transport_id:6
+
+List of devices attached
 4UX02211060009xx       device usb:338952192X product:NOP-AN00P model:NOP_AN00 device:HWNOP transport_id:2
 */
 func ListAndroidDevices() (devices []map[string]string) {
@@ -30,7 +33,7 @@ func ListAndroidDevices() (devices []map[string]string) {
 			continue
 		}
 		m := make(map[string]string, 0)
-		m["id"] = row[0]
+		m["con"] = row[0] // id or ip:port
 		for _, info := range strings.Split(row[1], " ") {
 			kv := strings.Split(info, ":")
 			switch len(kv) {
@@ -40,6 +43,7 @@ func ListAndroidDevices() (devices []map[string]string) {
 				m[kv[0]] = kv[1]
 			}
 		}
+		m["id"] = GetAndroidDeviceInfo(row[0], "ro.boot.serialno")
 		m["name"] = GetAndroidDeviceInfo(row[0], "ro.config.marketing_name")
 		m["brand"] = GetAndroidDeviceInfo(row[0], "ro.product.brand")
 		GetAndroidDeviceDiskSpace(m)
