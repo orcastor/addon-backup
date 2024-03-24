@@ -28,7 +28,7 @@ func ListIOSDevices() (devices []map[string]string) {
 		GetIOSDeviceInfo(m, row[0])
 		// 磁盘空间信息
 		GetIOSDeviceInfo(m, row[0], "-q", "com.apple.disk_usage")
-		m["name"] = GetIOSProductName(m["ProductType"])
+		m["product_name"] = GetIOSProductName(m["ProductType"])
 		m["brand"] = "APPLE"
 		devices = append(devices, m)
 	}

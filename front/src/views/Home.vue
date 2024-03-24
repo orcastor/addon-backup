@@ -53,7 +53,7 @@
       </el-header>
       <el-main
         v-loading="loading"
-        element-loading-text="等待设备通过USB/WIFI连接"
+        element-loading-text="等待设备通过USB / WIFI连接"
         element-loading-background="rgba(0, 0, 0, 0.8)"
         class="main" :style=mainStyle()>
       </el-main>

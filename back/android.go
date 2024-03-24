@@ -33,14 +33,6 @@ func ListAndroidDevices() (devices []map[string]string) {
 			continue
 		}
 		m := make(map[string]string, 0)
-		if strings.Index(row[0], ":") >= 0 {
-			m["id"] = GetAndroidDeviceInfo(row[0], "ro.boot.serialno")
-			m["con"] = row[0] // ip:port
-		} else {
-			m["id"] = row[0] // id
-			m["con"] = "USB"
-		}
-
 		for _, info := range strings.Split(row[1], " ") {
 			kv := strings.Split(info, ":")
 			switch len(kv) {
@@ -50,8 +42,19 @@ func ListAndroidDevices() (devices []map[string]string) {
 				m[kv[0]] = kv[1]
 			}
 		}
-		m["name"] = GetAndroidDeviceInfo(row[0], "ro.config.marketing_name")
+		if _, ok := m["usb"]; ok {
+			m["id"] = row[0] // id
+			m["con"] = "USB"
+		} else {
+			m["id"] = GetAndroidDeviceInfo(row[0], "ro.boot.serialno")
+			m["con"] = row[0] // ip:port
+		}
 		m["brand"] = GetAndroidDeviceInfo(row[0], "ro.product.brand")
+		m["product_name"] = GetAndroidDeviceInfo(row[0], "ro.config.marketing_name")
+		if m["product_name"] == "" {
+			m["product_name"] = m["brand"] + " " + GetAndroidDeviceInfo(row[0], "ro.product.model")
+		}
+		m["name"] = GetAndroidDeviceInfo(row[0], "ro.product.name")
 		GetAndroidDeviceDiskSpace(m)
 		devices = append(devices, m)
 	}

@@ -7,9 +7,10 @@ import (
 )
 
 type DeviceInfo struct {
-	DeviceID      string `json:"device_id,omitempty"`
+	ID            string `json:"id,omitempty"`
 	Authorized    bool   `json:"authorized"`
 	SerialNo      string `json:"serial_no,omitempty"`
+	Name          string `json:"name,omitempty"`
 	Connection    string `json:"connection,omitempty"` // USB / <IP>
 	ProductName   string `json:"product_name,omitempty"`
 	Brand         string `json:"brand,omitempty"`
@@ -29,16 +30,17 @@ func list(ctx *gin.Context) {
 	for _, dev := range androidDevs {
 		if dev["type"] == "unauthorized" {
 			devs = append(devs, &DeviceInfo{
-				DeviceID:   dev["id"],
+				ID:         dev["id"],
 				Authorized: false,
 			})
 		} else {
 			devs = append(devs, &DeviceInfo{
-				DeviceID:      dev["id"],
+				ID:            dev["id"],
 				Authorized:    true,
 				SerialNo:      dev["id"],
+				Name:          dev["name"],
 				Connection:    dev["con"],
-				ProductName:   dev["name"],
+				ProductName:   dev["product_name"],
 				Brand:         dev["brand"],
 				OS:            "ANDROID",
 				Total:         dev["total"],
@@ -50,16 +52,17 @@ func list(ctx *gin.Context) {
 	for _, dev := range iosDevs {
 		if len(dev) <= 2 {
 			devs = append(devs, &DeviceInfo{
-				DeviceID:   dev["id"],
+				ID:         dev["id"],
 				Authorized: false,
 			})
 		} else {
 			devs = append(devs, &DeviceInfo{
-				DeviceID:      dev["id"],
+				ID:            dev["id"],
 				Authorized:    true,
 				SerialNo:      dev["SerialNumber"],
+				Name:          dev["DeviceName"],
 				Connection:    dev["con"],
-				ProductName:   dev["name"],
+				ProductName:   dev["product_name"],
 				Brand:         dev["brand"],
 				OS:            "IOS",
 				Total:         dev["TotalDiskCapacity"],
