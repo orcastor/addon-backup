@@ -28,6 +28,8 @@ func ListIOSDevices() (devices []map[string]string) {
 		GetIOSDeviceInfo(m, row[0])
 		// 磁盘空间信息
 		GetIOSDeviceInfo(m, row[0], "-q", "com.apple.disk_usage")
+		GetIOSDeviceInfo(m, row[0], "-q", "com.apple.mobile.battery")
+		GetIOSDeviceInfo(m, row[0], "-q", "com.apple.mobile.backup")
 		m["product_name"] = GetIOSProductName(m["ProductType"])
 		m["brand"] = "APPLE"
 		devices = append(devices, m)
@@ -69,6 +71,8 @@ func GetIOSDeviceInfo(m map[string]string, args ...string) {
 		case "DeviceClass", "DeviceColor", "DeviceName", "SerialNumber", "PhoneNumber":
 		case "ProductType", "ProductVersion", "ModelNumber", "RegionInfo", "RegulatoryModelNumber":
 		case "TotalDiskCapacity", "TotalDataAvailable", "TotalSystemAvailable":
+		case "BatteryIsCharging", "BatteryCurrentCapacity":
+		case "WillEncrypt":
 			m[kv[0]] = kv[1]
 		}
 	}
@@ -130,7 +134,7 @@ var iPhoneNames = map[string]string{
 	"12,1": "11",
 	"12,3": "11 Pro",
 	"12,5": "11 Pro Max",
-	"12,8": "SE 2",
+	"12,8": "SE2",
 	"13,1": "12 mini",
 	"13,2": "12",
 	"13,3": "12 Pro",
@@ -139,7 +143,7 @@ var iPhoneNames = map[string]string{
 	"14,5": "13",
 	"14,2": "13 Pro",
 	"14,3": "13 Pro Max",
-	"14,6": "SE 3rd Gen",
+	"14,6": "SE3",
 	"14,7": "14",
 	"14,8": "14 Plus",
 	"15,2": "14 Pro",

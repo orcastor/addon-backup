@@ -18,6 +18,9 @@ type DeviceInfo struct {
 	Total         string `json:"total,omitempty"`
 	DataAvailable string `json:"data_available,omitempty"`
 	SysAvailable  string `json:"sys_available,omitempty"`
+	IsCharging    bool   `json:"is_charing,omitempty"`
+	BatteryLevel  string `json:"battery_level,omitempty"`
+	Encrypt       bool   `json:"encrypt,omitempty"`
 }
 
 func list(ctx *gin.Context) {
@@ -45,6 +48,8 @@ func list(ctx *gin.Context) {
 				OS:            "ANDROID",
 				Total:         dev["total"],
 				DataAvailable: dev["available"],
+				IsCharging:    dev["status"] == "2",
+				BatteryLevel:  dev["level"],
 			})
 		}
 	}
@@ -68,6 +73,9 @@ func list(ctx *gin.Context) {
 				Total:         dev["TotalDiskCapacity"],
 				DataAvailable: dev["TotalDataAvailable"],
 				SysAvailable:  dev["TotalSystemAvailable"],
+				IsCharging:    dev["BatteryIsCharging"] == "true",
+				BatteryLevel:  dev["BatteryCurrentCapacity"],
+				Encrypt:       dev["WillEncrypt"] == "1",
 			})
 		}
 	}

@@ -55,7 +55,7 @@ func ListAndroidDevices() (devices []map[string]string) {
 			m["product_name"] = m["brand"] + " " + GetAndroidDeviceInfo(row[0], "ro.product.model")
 		}
 		m["name"] = GetAndroidDeviceInfo(row[0], "ro.product.name")
-		GetAndroidDeviceDiskSpace(m)
+		GetAndroidDeviceDiskSpace(row[0], m)
 		devices = append(devices, m)
 	}
 	return devices
@@ -70,8 +70,8 @@ func GetAndroidDeviceInfo(id, prop string) string {
 	return strings.TrimSpace(string(output))
 }
 
-func GetAndroidDeviceDiskSpace(m map[string]string) {
-	output, _ := exec.Command("adb", "shell", "df", "/storage/emulated").CombinedOutput()
+func GetAndroidDeviceDiskSpace(id string, m map[string]string) {
+	output, _ := exec.Command("adb", "-s", id, "shell", "df", "/storage/emulated").CombinedOutput()
 	dfs := strings.Split(string(output), "\n")
 	if len(dfs) <= 1 {
 		return
@@ -86,5 +86,23 @@ func GetAndroidDeviceDiskSpace(m map[string]string) {
 	m["used"] = row[2]
 	m["available"] = row[3]
 	m["use%"] = row[4]
-	return
+}
+
+func GetAndroidDeviceBatteryInfo(id string, m map[string]string) {
+	output, _ := exec.Command("adb", "-s", id, "shell", "dumpsys", "battery").CombinedOutput()
+	info := strings.Split(string(output), "\n")
+	if len(info) <= 0 {
+		return
+	}
+	for _, line := range info {
+		row := strings.Split(strings.Trim(line, "\r\n "), ": ")
+		if len(row) < 2 {
+			continue
+		}
+		key := strings.Trim(row[0], " \t\r\n")
+		switch key {
+		case "status", "level":
+			m[key] = row[1]
+		}
+	}
 }
