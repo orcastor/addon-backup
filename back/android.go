@@ -50,9 +50,10 @@ func ListAndroidDevices() (devices []map[string]string) {
 			m["con"] = row[0] // ip:port
 		}
 		m["brand"] = GetAndroidDeviceInfo(row[0], "ro.product.brand")
+		m["model"] = GetAndroidDeviceInfo(row[0], "ro.product.model")
 		m["product_name"] = GetAndroidDeviceInfo(row[0], "ro.config.marketing_name")
 		if m["product_name"] == "" {
-			m["product_name"] = m["brand"] + " " + GetAndroidDeviceInfo(row[0], "ro.product.model")
+			m["product_name"] = m["brand"] + " " + m["model"]
 		}
 		m["name"] = GetAndroidDeviceInfo(row[0], "ro.product.name")
 		GetAndroidDeviceDiskSpace(row[0], m)

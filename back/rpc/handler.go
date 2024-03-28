@@ -4,6 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/orcastor/addon-backup/back"
 	"github.com/orcastor/orcas/rpc/util"
+
+	"github.com/orcastor/phone_images"
 )
 
 type DeviceInfo struct {
@@ -16,6 +18,7 @@ type DeviceInfo struct {
 	Brand       string `json:"brand,omitempty"`
 	OS          string `json:"os,omitempty"` // ANDROID / IOS
 	Version     string `json:"version,omitempty"`
+	ImgURL      string `json:"img_url,omitempty"`
 
 	Total         string `json:"total,omitempty"`
 	DataAvailable string `json:"data_available,omitempty"`
@@ -83,6 +86,7 @@ func list(ctx *gin.Context) {
 				DataAvailable: dev["available"],
 				IsCharging:    dev["status"] == "2",
 				BatteryLevel:  dev["level"],
+				ImgURL:        phone_images.GetAndroidURL(phone_images.GetAndroidProductName(dev["brand"], dev["model"])),
 			})
 		}
 	}
@@ -110,6 +114,7 @@ func list(ctx *gin.Context) {
 				IsCharging:    dev["BatteryIsCharging"] == "true",
 				BatteryLevel:  dev["BatteryCurrentCapacity"],
 				WillEncrypt:   dev["WillEncrypt"] == "1",
+				ImgURL:        phone_images.GetIOSURL(dev["product_name"], dev["ModelNumber"]),
 			})
 		}
 	}
