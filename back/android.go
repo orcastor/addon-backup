@@ -56,6 +56,8 @@ func ListAndroidDevices() (devices []map[string]string) {
 		}
 		m["name"] = GetAndroidDeviceInfo(row[0], "ro.product.name")
 		GetAndroidDeviceDiskSpace(row[0], m)
+		GetAndroidDeviceBatteryInfo(row[0], m)
+		// TODO：获取WIFI信息
 		devices = append(devices, m)
 	}
 	return devices
@@ -102,7 +104,7 @@ func GetAndroidDeviceBatteryInfo(id string, m map[string]string) {
 		key := strings.Trim(row[0], " \t\r\n")
 		switch key {
 		case "status", "level":
-			m[key] = row[1]
+			m[key] = strings.Trim(row[1], " \t\r\n")
 		}
 	}
 }

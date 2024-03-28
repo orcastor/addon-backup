@@ -1,6 +1,7 @@
 package back
 
 import (
+	"fmt"
 	"os/exec"
 	"strings"
 )
@@ -26,12 +27,12 @@ func ListIOSDevices() (devices []map[string]string) {
 		m["con"] = strings.Trim(row[1], "()")
 		// 基础信息
 		GetIOSDeviceInfo(m, row[0])
+		m["product_name"] = GetIOSProductName(m["ProductType"])
+		m["brand"] = "APPLE"
 		// 磁盘空间信息
 		GetIOSDeviceInfo(m, row[0], "-q", "com.apple.disk_usage")
 		GetIOSDeviceInfo(m, row[0], "-q", "com.apple.mobile.battery")
 		GetIOSDeviceInfo(m, row[0], "-q", "com.apple.mobile.backup")
-		m["product_name"] = GetIOSProductName(m["ProductType"])
-		m["brand"] = "APPLE"
 		devices = append(devices, m)
 	}
 	return
@@ -67,11 +68,16 @@ func GetIOSDeviceInfo(m map[string]string, args ...string) {
 		if len(kv) <= 1 {
 			continue
 		}
+		fmt.Println(kv[0])
 		switch kv[0] {
 		case "DeviceClass", "DeviceColor", "DeviceName", "SerialNumber", "PhoneNumber":
+			fallthrough
 		case "ProductType", "ProductVersion", "ModelNumber", "RegionInfo", "RegulatoryModelNumber":
+			fallthrough
 		case "TotalDiskCapacity", "TotalDataAvailable", "TotalSystemAvailable":
+			fallthrough
 		case "BatteryIsCharging", "BatteryCurrentCapacity":
+			fallthrough
 		case "WillEncrypt":
 			m[kv[0]] = kv[1]
 		}
