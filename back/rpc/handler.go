@@ -7,22 +7,55 @@ import (
 )
 
 type DeviceInfo struct {
-	ID            string `json:"id,omitempty"`
-	Authorized    bool   `json:"authorized"`
-	SerialNo      string `json:"serial_no,omitempty"`
-	Name          string `json:"name,omitempty"`
-	Connection    string `json:"connection,omitempty"` // USB / <IP>
-	ProductName   string `json:"product_name,omitempty"`
-	Brand         string `json:"brand,omitempty"`
-	OS            string `json:"os,omitempty"` // ANDROID / IOS
+	ID          string `json:"id,omitempty"`
+	Authorized  bool   `json:"authorized"`
+	SerialNo    string `json:"serial_no,omitempty"`
+	Name        string `json:"name,omitempty"`
+	Connection  string `json:"connection,omitempty"` // USB / <IP>
+	ProductName string `json:"product_name,omitempty"`
+	Brand       string `json:"brand,omitempty"`
+	OS          string `json:"os,omitempty"` // ANDROID / IOS
+	Version     string `json:"version,omitempty"`
+
 	Total         string `json:"total,omitempty"`
 	DataAvailable string `json:"data_available,omitempty"`
 	SysAvailable  string `json:"sys_available,omitempty"`
-	IsCharging    bool   `json:"is_charing,omitempty"`
-	BatteryLevel  string `json:"battery_level,omitempty"`
-	Encrypt       bool   `json:"encrypt,omitempty"`
+
+	IsCharging   bool   `json:"is_charing,omitempty"`
+	BatteryLevel string `json:"battery_level,omitempty"`
+	WillEncrypt  bool   `json:"will_encrypt,omitempty"`
+
+	Progress  string `json:"progress,omitempty"`
+	LastTime  string `json:"last_time,omitempty"`
+	LastError string `json:"last_error,omitempty"`
 }
 
+/*
+	{
+	    "code": 0,
+	    "data": {
+	        "count": 1,
+	        "devs": [
+	            {
+	                "id": "d2e6c832cd7d0a4cff535b59e4f567bbfef65dc2",
+	                "authorized": true,
+	                "serial_no": "F2LSQ3H8HFY5",
+	                "name": "“PP”的 iPhone",
+	                "connection": "USB",
+	                "product_name": "iPhone 7 Plus",
+	                "brand": "APPLE",
+	                "os": "IOS",
+	                "version": "15.8.2",
+	                "total": "256000000000",
+	                "data_available": "200961683456",
+	                "sys_available": "0",
+	                "is_charing": true,
+	                "battery_level": "43"
+	            }
+	        ]
+	    }
+	}
+*/
 func list(ctx *gin.Context) {
 	var req struct {
 	}
@@ -70,12 +103,13 @@ func list(ctx *gin.Context) {
 				ProductName:   dev["product_name"],
 				Brand:         dev["brand"],
 				OS:            "IOS",
+				Version:       dev["ProductVersion"],
 				Total:         dev["TotalDiskCapacity"],
 				DataAvailable: dev["TotalDataAvailable"],
 				SysAvailable:  dev["TotalSystemAvailable"],
 				IsCharging:    dev["BatteryIsCharging"] == "true",
 				BatteryLevel:  dev["BatteryCurrentCapacity"],
-				Encrypt:       dev["WillEncrypt"] == "1",
+				WillEncrypt:   dev["WillEncrypt"] == "1",
 			})
 		}
 	}

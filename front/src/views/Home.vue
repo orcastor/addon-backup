@@ -24,9 +24,9 @@
           </template>
         </el-menu-item>
         <el-menu-item :index="1">
-          <el-icon><Box /></el-icon>
+          <el-icon><Setting /></el-icon>
           <template #title>
-            <span>备份管理</span>
+            <span>备份设置</span>
           </template>
         </el-menu-item>
       </el-menu>
@@ -56,6 +56,19 @@
         element-loading-text="等待设备通过USB / WIFI连接"
         element-loading-background="rgba(0, 0, 0, 0.8)"
         class="main" :style=mainStyle()>
+        <el-carousel type="card" arrow="always" :autoplay="false" height="100%">
+          <el-carousel-item v-for="item in data" :key="item.id" :name="item.name">
+            <el-card :body-style="{ padding: '0px' }" shadow="hover">
+              <img src="https://raw.githubusercontent.com/orcastor/phone_images/master/ios/iPhone%207%20Plus%20Pink.jpg" class="image">
+              <div style="padding: 14px;">
+                <span>{{ item.product_name }}</span>
+                <div class="bottom clearfix">
+                  <el-button type="text" class="button">备份</el-button>
+                </div>
+              </div>
+            </el-card>
+          </el-carousel-item>
+        </el-carousel>
       </el-main>
     </el-container>
   </el-container>
@@ -66,7 +79,7 @@ import { ref, computed, watch, onMounted } from 'vue';
 import router from "@/routers";
 
 import { store } from "@/store";
-import { House, Expand, Fold, Box } from '@element-plus/icons-vue';
+import { House, Expand, Fold, Setting } from '@element-plus/icons-vue';
 import { toDefaultIcon, toIcon, getExt, isZip } from "@/config/icons";
 
 import { Cache } from "@/store/cache";
@@ -136,14 +149,12 @@ onMounted(() => {
   init();
 });
 
-const init = () => {
+const init = async () => {
   try {
     const req:Device.ReqList = {};
-    const res = listApi(req);
-    console.log(res);
-    
-    let devs = res.data!.devs as never;
-    if (devs?.length > 0) {
+    const res = await listApi(req);
+    data.value = res.data!.devs as never;
+    if (data.value) {
       loading.value = false;
     }
   } finally {
@@ -246,5 +257,42 @@ const logout = () => {
       }
     }
   }
+}
+
+.el-carousel {
+  height: 100%;
+}
+
+.el-carousel__container {
+  height: 100%;
+}
+
+.el-card {
+  margin: 50px auto;
+}
+
+.bottom {
+  margin-top: 13px;
+  line-height: 12px;
+}
+
+.button {
+  padding: 0;
+  float: right;
+}
+
+.image {
+  width: 100%;
+  display: block;
+}
+
+.clearfix:before,
+.clearfix:after {
+    display: table;
+    content: "";
+}
+
+.clearfix:after {
+    clear: both
 }
 </style>
