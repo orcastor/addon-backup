@@ -6,6 +6,12 @@
 
 <p align="center"><strong>OrcaS 手机备份插件</strong></p>
 
+<p align="center">
+  <a href="https://raw.githubusercontent.com/orcastor/addon-backup/master/assets/demo.png">
+    <img src="./assets/demo.png" width="80%" />
+  </a>
+</p>
+
 ## 目标
 
 - 💣 性能提升
