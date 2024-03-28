@@ -59,7 +59,7 @@
         <el-carousel type="card" arrow="always" :autoplay="false" height="100%">
           <el-carousel-item v-for="item in data" :key="item.id" :name="item.name">
             <el-card :body-style="{ padding: '0px' }" shadow="hover">
-              <img src="https://raw.githubusercontent.com/orcastor/phone_images/master/ios/iPhone%207%20Plus%20Pink.jpg" class="image">
+              <img :src="item.img_url" class="image">
               <div style="padding: 14px;">
                 <span>{{ item.product_name }}</span>
                 <div class="bottom clearfix">

@@ -4,7 +4,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/orcastor/phone_images"
+	"github.com/orcastor/phone_images/sdk"
 )
 
 /*
@@ -28,7 +28,7 @@ func ListIOSDevices() (devices []map[string]string) {
 		m["con"] = strings.Trim(row[1], "()")
 		// 基础信息
 		GetIOSDeviceInfo(m, row[0])
-		m["product_name"] = phone_images.GetIOSProductName(m["ProductType"])
+		m["product_name"] = sdk.GetIOSProductName(m["ProductType"])
 		m["brand"] = "APPLE"
 		// 磁盘空间信息
 		GetIOSDeviceInfo(m, row[0], "-q", "com.apple.disk_usage")
