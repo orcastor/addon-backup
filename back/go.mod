@@ -7,5 +7,5 @@ require (
 	github.com/gotmc/libusb/v2 v2.2.0
 	github.com/gotomicro/ego v1.1.5
 	github.com/orcastor/orcas v0.0.0-20230120054615-05c0eccca321
-	github.com/orcastor/phone_images/sdk v0.0.0-20240328162423-4b786e6616b7 // indirect
+	github.com/orcastor/phone_images/sdk v0.0.0-20240401074640-41eda917aad2 // indirect
 )
