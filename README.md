@@ -59,6 +59,7 @@
 
 - 使用[`idevicebackup2`](https://github.com/libimobiledevice/libimobiledevice)像iTunes一样备份
 - 使用[`gidevice`](https://github.com/orcastor/gidevice)直接对接协议层
+- **注意：有issue中提到协议版本不是最新的风险**
 
 #### Android
 
