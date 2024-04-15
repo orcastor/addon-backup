@@ -23,6 +23,7 @@ func main() {
 
 		api := server.Group("/bak/api")
 		api.POST("/list", list)
+		api.POST("/backup", backup)
 		return server
 	}()).Run(); err != nil {
 		elog.Panic("startup", elog.Any("err", err))

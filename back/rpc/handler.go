@@ -123,3 +123,26 @@ func list(ctx *gin.Context) {
 		"count": len(devs),
 	})
 }
+
+func backup(ctx *gin.Context) {
+	var req struct {
+		ID string `json:"id"`
+	}
+	ctx.BindJSON(&req)
+
+	androidDevs := back.ListAndroidDevices()
+	for _, dev := range androidDevs {
+		if req.ID == dev["id"] {
+
+		}
+	}
+
+	iosDevs := back.ListIOSDevices()
+	for _, dev := range iosDevs {
+		if req.ID == dev["id"] {
+
+		}
+	}
+
+	util.Response(ctx, gin.H{})
+}
