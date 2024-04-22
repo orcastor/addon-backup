@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/orcastor/addon-backup/back"
+	giDevice "github.com/orcastor/gidevice"
 	"github.com/orcastor/orcas/rpc/util"
 	"github.com/orcastor/phone_images/sdk"
 )
@@ -140,7 +141,26 @@ func backup(ctx *gin.Context) {
 	iosDevs := back.ListIOSDevices()
 	for _, dev := range iosDevs {
 		if req.ID == dev["id"] {
+			um, err := giDevice.NewUsbmux()
+			if err != nil {
+			}
 
+			devices, err := um.Devices()
+			if err != nil {
+			}
+
+			var dev giDevice.Device
+			for _, d := range devices {
+				if d.Properties().SerialNumber == req.ID {
+					dev = d
+				}
+			}
+
+			if dev != nil {
+				err = dev.StartBackup(dev.Properties().SerialNumber, "", map[string]interface{}{
+					"ForceFullBackup": true,
+				})
+			}
 		}
 	}
 
