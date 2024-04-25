@@ -125,6 +125,53 @@ func list(ctx *gin.Context) {
 	})
 }
 
+type BackupReadCloser struct {
+}
+
+func (*BackupReadCloser) Read(p []byte) (n int, err error) {
+	return
+}
+
+func (*BackupReadCloser) Close() error {
+	return nil
+}
+
+type BackupWriteCloser struct {
+}
+
+func (*BackupWriteCloser) Write(p []byte) (n int, err error) {
+	return
+}
+
+func (*BackupWriteCloser) Close() error {
+	return nil
+}
+
+type BackupRecv struct {
+}
+
+func (recv *BackupRecv) OnProgress(progress float64) {
+	fmt.Printf("%.2f\r", progress)
+}
+
+func (recv *BackupRecv) OnWriteFile(dpath, path string) (io.WriteCloser, error) {
+	return &BackupWriteCloser{}, nil
+}
+
+func (recv *BackupRecv) OnReadFile(dpath, path string) (io.ReadCloser, error) {
+	return &BackupReadCloser{}, nil
+}
+
+func (recv *BackupRecv) GetFreeDiskSpace() uint64 {
+	return uint64(8000000000000)
+}
+
+func (recv *BackupRecv) OnAbort(err error) {
+}
+
+func (recv *BackupRecv) OnFinish() {
+}
+
 func backup(ctx *gin.Context) {
 	var req struct {
 		ID string `json:"id"`
@@ -160,6 +207,8 @@ func backup(ctx *gin.Context) {
 				err = dev.StartBackup(dev.Properties().SerialNumber, "", map[string]interface{}{
 					"ForceFullBackup": true,
 				})
+
+				dev.Backup(&BackupRecv{})
 			}
 		}
 	}
