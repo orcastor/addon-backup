@@ -63,7 +63,7 @@
               <div style="padding: 14px;">
                 <span>{{ item.product_name }}</span>
                 <div class="bottom clearfix">
-                  <el-button type="text" class="button">备份</el-button>
+                  <el-button type="text" class="button" @click="backup(item.id)">备份</el-button>
                 </div>
               </div>
             </el-card>
@@ -85,7 +85,7 @@ import { toDefaultIcon, toIcon, getExt, isZip } from "@/config/icons";
 import { Cache } from "@/store/cache";
 
 import { Device } from "@/api/interface";
-import { listApi } from "@/api/modules/device";
+import { listApi, backupApi } from "@/api/modules/device";
 
 import 'element-plus/es/components/message-box/style/css';
 import { ElMessage, ElMessageBox } from 'element-plus';
@@ -175,6 +175,14 @@ const logout = () => {
     });
     router.push({ name: "login", query: router.currentRoute.value.query });
   });
+};
+
+const backup = async (id:string) => {
+  try {
+    const req:Device.ReqBackup = { id };
+    const _res = await backupApi(req);
+  } finally {
+  }
 };
 
 </script>

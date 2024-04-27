@@ -41,4 +41,9 @@ export namespace Device {
     count: number;
     devs: DeviceInfo[];
   }
+  export interface ReqBackup {
+    id: string;
+  }
+  export interface ResBackup {
+  }
 }
