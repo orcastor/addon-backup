@@ -61,6 +61,7 @@
 - 使用[`idevicebackup2`](https://github.com/libimobiledevice/libimobiledevice)像iTunes一样备份
 - 使用[`gidevice`](https://github.com/orcastor/gidevice)直接对接协议层
 - **注意：有issue中提到协议版本不是最新的风险**
+  - 例如使用备份工具异常退出后，再次发起备份，`iTunes`可能会通过特殊协议解除这个状态，但通过`libimobiledevice`无法绕过，只能重启设备后恢复正常，可能需要通过抓包分析`iTunes`的行为跟踪
 
 #### Android
 
